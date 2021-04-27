@@ -1,0 +1,5 @@
+Data from file2
+Hello this is file2
+Reading
+sas
+sds
