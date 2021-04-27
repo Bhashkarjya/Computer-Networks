@@ -1,0 +1,55 @@
+#include <time.h>
+#include <stdio.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <pthread.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <netinet/ip.h>
+#include <arpa/inet.h>
+#include <errno.h>
+#include <netinet/if_ether.h>
+#include <net/ethernet.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/select.h>
+#include <sys/select.h>
+#include <sys/un.h>
+#include <sys/shm.h>
+#include <sys/ipc.h>
+#include <sys/socket.h>
+#include <netinet/ether.h>
+#include <netinet/udp.h>
+#include <semaphore.h>
+#include <sys/msg.h>
+#include <bits/stdc++.h>
+
+#define MAX_SIZE 20
+
+using namespace std;
+
+struct messagebuf{
+    long mtype;
+    char mtext[200];
+};
+
+struct messagebuf message1,message2;
+int main()
+{
+    //generate a key for the message queue
+    key_t key=ftok("MSG_Q",65);
+    //create a new message queue
+    int msgid = msgget(key,0666|IPC_CREAT);
+    msgrcv(msgid,&message2,sizeof(message2),2,0);
+    msgrcv(msgid,&message1,sizeof(message1),1,0);
+    cout<<"Data received from the message queues:\n";
+    cout<<message1.mtext<<endl;
+    cout<<message2.mtext<<endl;
+    msgctl(msgid,IPC_RMID,NULL);
+
+    return 0;
+}
+
